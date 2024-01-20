@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { signInUser, signUpUser } from "../../firebase/auth";
+import { signInUser } from "../../firebase/auth";
 import {
   Alert,
   AlertIcon,
@@ -8,34 +8,28 @@ import {
   ButtonGroup,
   Card,
   CardBody,
+  CardFooter,
   CardHeader,
   Center,
   Heading,
 } from "@chakra-ui/react";
 
-import { FormField, Loader, PrimaryButton } from "../components/common";
+import { FormField, Loader, PrimaryButton, Link } from "../components/common";
 
-const Auth = ({ purpose }) => {
+const SignIn = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const navigate = useNavigate();
 
-  const onClickHandler = async () => {
+  const signInHandler = async () => {
     if (!email || !pass) return;
 
     setIsLoading(true);
 
-    let error;
-
-    if (purpose === "sign-in") {
-      const result = await signInUser(email, pass);
-      error = result.error;
-    } else {
-      const result = await signUpUser(email, pass);
-      error = result.error;
-    }
+    const { error } = await signInUser(email, pass);
+    console.log(error);
 
     if (error) {
       setError(true);
@@ -60,7 +54,7 @@ const Auth = ({ purpose }) => {
       <Card minW={"30%"}>
         <CardHeader>
           <Heading color={"blackAlpha.700"} size={"md"}>
-            {purpose === "sign-in" ? "Sign In" : "Sign Up"}
+            Sign In
           </Heading>
         </CardHeader>
         <CardBody display={"flex"} flexDir={"column"} gap={5}>
@@ -77,8 +71,8 @@ const Auth = ({ purpose }) => {
             onChange={(e) => setPass(e.target.value)}
           />
           <ButtonGroup>
-            <PrimaryButton w={"100%"} onClick={onClickHandler}>
-              {purpose === "sign-in" ? "Login" : "Register"}
+            <PrimaryButton w={"100%"} onClick={signInHandler}>
+              Login
             </PrimaryButton>
           </ButtonGroup>
         </CardBody>
@@ -87,4 +81,4 @@ const Auth = ({ purpose }) => {
   );
 };
 
-export default Auth;
+export default SignIn;

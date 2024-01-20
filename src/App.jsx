@@ -1,39 +1,46 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Box, Flex } from "@chakra-ui/react";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 
 import AuthenticationRoute from "./routes/AuthenticationRoute";
 import HomeRoute from "./routes/HomeRoute";
-import Header from "./components/common/Header";
 import SignUp from "./pages/SignUp";
+import SignIn from "./pages/SignIn";
+import MainLayout from "./components/layouts/MainLayout";
 
 const router = createBrowserRouter([
   {
-    path: "auth",
-    element: <AuthenticationRoute />,
+    path: "*",
+    element: <MainLayout />,
     children: [
       {
-        path: "sign-in",
-        element: <div>Sign In Page</div>,
+        path: "auth",
+        element: <AuthenticationRoute />,
+        children: [
+          {
+            path: "sign-in",
+            element: <SignIn />,
+          },
+          {
+            path: "sign-up",
+            element: <SignUp />,
+          },
+          {
+            path: "*",
+            element: <Navigate to={"/auth/sign-in"} replace />,
+          },
+        ],
       },
       {
-        path: "sign-up",
-        element: <SignUp />,
+        path: "*",
+        element: <HomeRoute />,
       },
     ],
   },
-  {
-    path: "*",
-    element: <HomeRoute />,
-  },
 ]);
 
-const App = () => (
-  <Flex minH={"100vh"} flexDir={"column"}>
-    <Header />
-    <Box flexGrow={1} as="main" bg={"blackAlpha.100"}>
-      <RouterProvider router={router} />
-    </Box>
-  </Flex>
-);
+const App = () => <RouterProvider router={router} />;
 
 export default App;

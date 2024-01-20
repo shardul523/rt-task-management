@@ -1,4 +1,4 @@
-const Loader = () => {
+export const Loader = () => {
   return <div>Loadint...</div>;
 };
 
