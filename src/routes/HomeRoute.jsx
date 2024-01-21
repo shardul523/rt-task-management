@@ -11,6 +11,7 @@ const HomeRoute = () => {
 
   if (!user) return <Navigate to={"/auth/sign-in"} />;
 
+  console.log(user);
   return <Home />;
 };
 

@@ -3,9 +3,10 @@ import { onAuthStateChanged } from "firebase/auth";
 
 import { auth } from "../../firebase/index";
 import { UserContext } from ".";
+import { getLocalUser } from "../utility";
 
 const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(auth.currentUser);
+  const [user, setUser] = useState(getLocalUser());
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {

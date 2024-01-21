@@ -6,8 +6,7 @@ import {
 
 import AuthenticationRoute from "./routes/AuthenticationRoute";
 import HomeRoute from "./routes/HomeRoute";
-import SignUp from "./pages/SignUp";
-import SignIn from "./pages/SignIn";
+import Auth from "./pages/Auth";
 import MainLayout from "./components/layouts/MainLayout";
 
 const router = createBrowserRouter([
@@ -21,11 +20,11 @@ const router = createBrowserRouter([
         children: [
           {
             path: "sign-in",
-            element: <SignIn />,
+            element: <Auth />,
           },
           {
             path: "sign-up",
-            element: <SignUp />,
+            element: <Auth purpose={"sign-up"} />,
           },
           {
             path: "*",
