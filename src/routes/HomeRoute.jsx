@@ -1,8 +1,7 @@
 import { useAuthUser } from "../context";
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 import Loader from "../components/common/Loader";
-import Home from "../pages/Home";
 
 const HomeRoute = () => {
   const { user, isLoading } = useAuthUser();
@@ -12,7 +11,7 @@ const HomeRoute = () => {
   if (!user) return <Navigate to={"/auth/sign-in"} />;
 
   console.log(user);
-  return <Home />;
+  return <Outlet />;
 };
 
 export default HomeRoute;

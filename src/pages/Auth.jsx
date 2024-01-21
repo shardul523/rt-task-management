@@ -1,90 +1,72 @@
-import { useCallback, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { signInUser, signUpUser } from "../../firebase/auth";
-import {
-  Alert,
-  AlertIcon,
-  AlertTitle,
-  Card,
-  CardBody,
-  CardHeader,
-  Center,
-  Heading,
-} from "@chakra-ui/react";
+import { useRef, useMemo, useState } from "react";
 
-import { FormField, PrimaryButton } from "../components/common";
+import { signInUser, signUpUser } from "../../firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { Loader, Form } from "../components/common";
+import { Center } from "@chakra-ui/react";
 
 const Auth = ({ purpose = "sign-in" }) => {
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const navigate = useNavigate();
+  const emailInputRef = useRef();
+  const passInputRef = useRef();
   const isSignIn = useMemo(() => purpose === "sign-in", [purpose]);
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const onClickHandler = useCallback(async () => {
-    if (!email || !pass) return;
+  const formConfig = useMemo(() => {
+    return {
+      title: isSignIn ? "Sign In" : "Sign Up",
+      formSize: "20%",
+      headingSize: "lg",
+      fields: [
+        {
+          name: "Email",
+          type: "email",
+          ref: emailInputRef,
+          id: "email",
+        },
+        {
+          name: "Password",
+          type: "password",
+          ref: passInputRef,
+          id: "pass",
+        },
+      ],
+      buttons: [
+        {
+          name: isSignIn ? "Login" : "Register",
+          onclick: async () => {
+            const email = emailInputRef.current.value;
+            const pass = passInputRef.current.value;
 
-    setIsLoading(true);
+            if (!email || !pass) return;
 
-    let error;
+            let error;
+            setIsLoading(true);
 
-    if (isSignIn) {
-      const result = await signInUser(email, pass);
-      error = result.error;
-    } else {
-      const result = await signUpUser(email, pass);
-      error = result.error;
-    }
+            if (isSignIn) {
+              const result = await signInUser(email, pass);
+              error = result.error;
+            } else {
+              const result = await signUpUser(email, pass);
+              error = result.error;
+            }
 
-    if (error) {
-      console.log(error);
-      setError(true);
-      setEmail("");
-      setPass("");
-    }
+            if (error) console.log(error);
 
-    setIsLoading(false);
+            setIsLoading(false);
 
-    if (!error) navigate("/", { replace: true });
-  }, [email, pass, isSignIn, navigate]);
+            if (!error) navigate("/", { replace: true });
+          },
+        },
+      ],
+    };
+  }, [isSignIn, navigate]);
+
+  if (isLoading) return <Loader />;
 
   return (
-    <Center minH={"80vh"} flexDir={"column"}>
-      {error && (
-        <Alert status="error" w={350}>
-          <AlertIcon />
-          <AlertTitle>Invalid Credentials</AlertTitle>
-        </Alert>
-      )}
-      <Card minW={"30%"}>
-        <CardHeader>
-          <Heading color={"blackAlpha.700"} size={"md"}>
-            {isSignIn ? "Sign In" : "Sign Up"}
-          </Heading>
-        </CardHeader>
-        <CardBody as={"form"} display={"flex"} flexDir={"column"} gap={5}>
-          <FormField
-            fieldName={"Email"}
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <FormField
-            fieldName={"Password"}
-            type="password"
-            value={pass}
-            onChange={(e) => setPass(e.target.value)}
-          />
-          <PrimaryButton
-            isLoading={isLoading}
-            w={"100%"}
-            onClick={onClickHandler}
-          >
-            {isSignIn ? "Login" : "Register"}
-          </PrimaryButton>
-        </CardBody>
-      </Card>
+    <Center minH={"80vh"}>
+      <Form formConfig={formConfig} />;
     </Center>
   );
 };

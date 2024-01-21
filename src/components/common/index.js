@@ -9,3 +9,6 @@ export * from "./FormField";
 export * from "./Header";
 export * from "./Link";
 export * from "./Loader";
+export * from "./PrimaryHeading";
+export * from "./Form";
+export * from "./ButtonLink";

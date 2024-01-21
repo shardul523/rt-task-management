@@ -1,10 +1,19 @@
 import { Box, Flex, Heading } from "@chakra-ui/react";
+import { useState } from "react";
 
 import { useAuthUser } from "../../context";
-import { Link } from "./Link";
+import { Link, PrimaryButton } from ".";
+import { signOutUser } from "../../../firebase/auth";
 
 export const Header = () => {
   const { user } = useAuthUser();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const signOutHandler = async () => {
+    setIsLoading(true);
+    await signOutUser();
+    setIsLoading(false);
+  };
 
   return (
     <Flex as={"header"} color={"white"} bg={"blackAlpha.800"} p={5}>
@@ -17,6 +26,11 @@ export const Header = () => {
             <Link to="/auth/sign-in">Sign In</Link>
             <Link to="/auth/sign-up">Sign Up</Link>
           </Flex>
+        )}
+        {user && (
+          <PrimaryButton isLoading={isLoading} onClick={signOutHandler}>
+            Sign Out
+          </PrimaryButton>
         )}
       </Box>
     </Flex>

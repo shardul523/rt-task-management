@@ -1,24 +1,10 @@
-import { ButtonGroup, Flex } from "@chakra-ui/react";
-import PrimaryButton from "../components/common/PrimaryButton";
-import { signOutUser } from "../../firebase/auth";
-import { useState } from "react";
+import { Flex } from "@chakra-ui/react";
+import { ButtonLink } from "../components/common";
 
 const Home = () => {
-  const [isLoading, setIsLoading] = useState(false);
-
-  const signOutHandler = async () => {
-    setIsLoading(true);
-    await signOutUser();
-    setIsLoading(false);
-  };
-
   return (
     <Flex>
-      <ButtonGroup>
-        <PrimaryButton isLoading={isLoading} onClick={signOutHandler}>
-          Sign Out
-        </PrimaryButton>
-      </ButtonGroup>
+      <ButtonLink to="/new-task">Add New Task</ButtonLink>
     </Flex>
   );
 };
