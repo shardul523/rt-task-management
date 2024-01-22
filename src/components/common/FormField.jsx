@@ -1,4 +1,4 @@
-import { Box, FormControl, FormLabel, Input, Textarea } from "@chakra-ui/react";
+import { FormControl, FormLabel, Input, Textarea } from "@chakra-ui/react";
 
 export const FormField = ({ field, ...inputProps }) => {
   const { name, id, type, ref } = field;

@@ -3,7 +3,7 @@ import { onAuthStateChanged } from "firebase/auth";
 
 import { auth } from "../../firebase/index";
 import { UserContext } from ".";
-import { getLocalUser } from "../utility";
+import { getLocalUser, setLocalUser } from "../utility";
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(getLocalUser());
@@ -13,9 +13,11 @@ const UserProvider = ({ children }) => {
     setIsLoading(true);
 
     const userChangeHandler = (user) => {
+      console.log(user);
       setIsLoading(true);
-      if (user) setUser(user);
-      else setUser(null);
+      if (user) setLocalUser(user);
+      else setLocalUser(null);
+      setUser(getLocalUser());
       setIsLoading(false);
 
       console.log(user);

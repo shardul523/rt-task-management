@@ -1,10 +1,12 @@
 import { Flex } from "@chakra-ui/react";
-import { ButtonLink } from "../components/common";
+import ToolBar from "../components/home/ToolBar";
+import TaskTable from "../components/home/TaskTable";
 
 const Home = () => {
   return (
-    <Flex>
-      <ButtonLink to="/new-task">Add New Task</ButtonLink>
+    <Flex p={10} flexDir={"column"} gap={5}>
+      <ToolBar />
+      <TaskTable />
     </Flex>
   );
 };

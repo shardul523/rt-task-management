@@ -10,10 +10,14 @@ import { addUser } from "./db";
 
 export async function signUpUser(email, password) {
   try {
-    const user = await createUserWithEmailAndPassword(auth, email, password);
-    addUser(user);
-    setLocalUser(user);
-    return { error: null, user };
+    const userToken = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    addUser(userToken.user);
+    setLocalUser(userToken);
+    return { error: null, user: userToken.user };
   } catch (error) {
     return { error, user: null };
   }
@@ -31,5 +35,4 @@ export async function signInUser(email, password) {
 
 export async function signOutUser() {
   await signOut(auth);
-  setLocalUser(null);
 }

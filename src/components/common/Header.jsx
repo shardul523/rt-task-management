@@ -2,7 +2,7 @@ import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useState } from "react";
 
 import { useAuthUser } from "../../context";
-import { Link, PrimaryButton } from ".";
+import { ButtonLink, PrimaryButton } from ".";
 import { signOutUser } from "../../../firebase/auth";
 
 export const Header = () => {
@@ -23,12 +23,20 @@ export const Header = () => {
       <Box w={"20%"}>
         {!user && (
           <Flex flexWrap={"wrap"} gap={10} alignItems={"center"} h={"100%"}>
-            <Link to="/auth/sign-in">Sign In</Link>
-            <Link to="/auth/sign-up">Sign Up</Link>
+            <ButtonLink colorScheme={"whiteAlpha"} to={"/auth/sign-in"}>
+              Sign In
+            </ButtonLink>
+            <ButtonLink colorScheme={"whiteAlpha"} to={"/auth/sign-up"}>
+              Sign Up
+            </ButtonLink>
           </Flex>
         )}
         {user && (
-          <PrimaryButton isLoading={isLoading} onClick={signOutHandler}>
+          <PrimaryButton
+            colorScheme={"whiteAlpha"}
+            isLoading={isLoading}
+            onClick={signOutHandler}
+          >
             Sign Out
           </PrimaryButton>
         )}
